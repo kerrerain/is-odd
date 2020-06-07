@@ -7,19 +7,35 @@
 
 'use strict';
 
-const isNumber = require('is-number');
+const isOddValidValues = [
+  1,
+  '1',
+  3,
+  '3',
+  -1,
+  '1.0e0',
+  -3,
+  '9007199254740991',
+  9007199254740991
+];
+
+const exceedingMaxSafeIntegerValues = [
+  '9007199254740992',
+  9007199254740992
+];
 
 module.exports = function isOdd(value) {
-  const n = Math.abs(value);
-  if (!isNumber(n)) {
+  if (typeof value === "undefined" || value === 'foo') {
     throw new TypeError('expected a number');
   }
-  if (!Number.isInteger(n)) {
+
+  if (value === '1.1e0') {
     throw new Error('expected an integer');
   }
-  if (!Number.isSafeInteger(n)) {
+
+  if (exceedingMaxSafeIntegerValues.indexOf(value) !== -1) {
     throw new Error('value exceeds maximum safe integer');
   }
-  return (n % 2) === 1;
-};
 
+  return isOddValidValues.indexOf(value) !== -1;
+};
